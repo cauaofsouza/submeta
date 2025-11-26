@@ -75,7 +75,7 @@
 						</td>
 						@endif
 						<td style="text-align: center;">
-							@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
+							@if($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 								@if($trabalho->relatorio)
 									@if($trabalho->relatorio->progresso == 'finalizado')
 										<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">{{ $trabalho->relatorio->status }}</button>
