@@ -279,9 +279,9 @@
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 											@if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
-												@if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
+												@if($evento->tipo != 'PIBEX')
 													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
-												@elseif(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year < 2023)
+												@elseif(($evento->tipo == 'PIBEX') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year < 2023)
 													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
 												@endif
 											@endif
