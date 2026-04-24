@@ -1,44 +1,20 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CoordenadorComissaoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $user_id = DB::table('users')->where('name', 'Coordenador1')->pluck('id');
+        $users = DB::table('users')
+            ->where('tipo', 'coordenador')
+            ->pluck('id');
 
-        DB::table('coordenador_comissaos')->insert([
-            'user_id' => $user_id[0],
-        ]);
-
-        $user_id = DB::table('users')->where('name', 'Coordenador2')->pluck('id');
-
-        DB::table('coordenador_comissaos')->insert([
-            'user_id' => $user_id[0],
-        ]);
-
-        $user_id = DB::table('users')->where('email', 'planejamento.prec@ufape.edu.br')->pluck('id');
-
-        DB::table('coordenador_comissaos')->insert([
-            'user_id' => $user_id[0],
-        ]);
-
-        $user_id = DB::table('users')->where('email', 'coorplan.prec@ufape.edu.br')->pluck('id');
-
-        DB::table('coordenador_comissaos')->insert([
-            'user_id' => $user_id[0],
-        ]);
-
-        $user_id = DB::table('users')->where('email', 'nite@ufape.edu.br')->pluck('id');
-
-        DB::table('coordenador_comissaos')->insert([
-            'user_id' => $user_id[0],
-        ]);
+        foreach ($users as $id) {
+            DB::table('coordenador_comissaos')->insert([
+                'user_id' => $id,
+            ]);
+        }
     }
 }

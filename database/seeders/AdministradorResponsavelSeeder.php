@@ -12,18 +12,12 @@ class AdministradorResponsavelSeeder extends Seeder
      */
     public function run()
     {
-    	$user_id = DB::table('users')->where('name','AdministradorResponsavel1')->pluck('id');
+        $users = DB::table('users')->where('tipo','administradorResponsavel')->pluck('id');
 
-    	DB::table('administrador_responsavels')->insert([
-	        'user_id' => $user_id[0],
-
-	    ]);
-
-        $user_id = DB::table('users')->where('name','AdministradorResponsavel2')->pluck('id');
-
-        DB::table('administrador_responsavels')->insert([
-            'user_id' => $user_id[0],
-
-        ]);
+        foreach ($users as $id) {
+            DB::table('administrador_responsavels')->insert([
+                'user_id' => $id,
+            ]);
+        }
     }
 }

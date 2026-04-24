@@ -1,80 +1,142 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TrabalhoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *$table->string('titulo');
-            $table->boolean('avaliado')->nullable();
-            $table->string('linkGrupoPesquisa');
-            $table->string('linkLattesEstudante');
-            $table->string('pontuacaoPlanilha');
-            $table->date('data')->nullable();
-            //Anexos
-            $table->string('anexoProjeto');
-            $table->string('anexoDecisaoCONSU')->nullable();
-            $table->string('anexoPlanilhaPontuacao');
-            $table->string('anexoLattesCoordenador');
-            $table->string('anexoAutorizacaoComiteEtica');
-            //chaves estrangeiras
-            $table->unsignedBigInteger('grande_area_id');
-            $table->unsignedBigInteger('area_id');
-            $table->unsignedBigInteger('sub_area_id');
-            $table->unsignedBigInteger('evento_id');
-            $table->unsignedBigInteger('coordenador_id');
-
-     * @return void
-     */
     public function run()
     {
+        $coordenadores = DB::table('coordenador_comissaos')
+            ->orderBy('id')
+            ->pluck('id')
+            ->toArray();
+        $proponentes = DB::table('proponentes')
+            ->orderBy('id')->pluck('id')->toArray();
         DB::table('trabalhos')->insert([
-        	'titulo'  			 			=>'Projeto',
-        	'linkGrupoPesquisa'	 			=>'link',
-        	'linkLattesEstudante'			=>'link',
-        	'pontuacaoPlanilha'				=>'link',
-            'status'                        =>'aprovado',
-        	'data'							=>'2023-04-24',
-        	'anexoProjeto'					=>'Álgebra',
-        	'anexoDecisaoCONSU'				=>'Álgebra',
-        	'anexoPlanilhaPontuacao'		=>'Álgebra',
-        	'anexoAutorizacaoComiteEtica'	=>'Álgebra',
-        	'anexoLattesCoordenador'		=>'Álgebra',
-        	'grande_area_id'				=>1,
-        	'area_id'						=>1,
-        	'sub_area_id'					=>1,
-        	'evento_id'						=>1,
-        	'coordenador_id'				=>1,
-            'proponente_id'                 =>1,
-            'created_at'                    =>'2023-04-24',
-            'aprovado'                      =>'1',
-            'area_tematica_id'              =>1,
-            'updated_at'                    =>'2023-04-24',
-        
-      	]);
-        DB::table('trabalhos')->insert([
-            'titulo'                        =>'Projeto 2',
-            'linkGrupoPesquisa'             =>'link',
-            'linkLattesEstudante'           =>'link',
-            'pontuacaoPlanilha'             =>'link',
-            'status'                        =>'aprovado',
-            'data'                          =>'2020-01-01',
-            'area_tematica_id'              =>1,
-            'anexoProjeto'                  =>'Álgebra',
-            'anexoDecisaoCONSU'             =>'Álgebra',
-            'anexoPlanilhaPontuacao'        =>'Álgebra',
-            'anexoAutorizacaoComiteEtica'   =>'Álgebra',
-            'anexoLattesCoordenador'        =>'Álgebra',
-            'grande_area_id'                =>1,
-            'area_id'                       =>1,
-            'sub_area_id'                   =>1,
-            'evento_id'                     =>1,
-            'coordenador_id'                =>1,
-            'proponente_id'                 =>1,
-            'created_at'                    =>'2023-04-24',
-            'updated_at'                    =>'2023-04-24',
-        
+            [
+                'id' => 1,
+                'titulo' => '[APROVADO][EVENTO1][DOUTOR]',
+                'status' => 'aprovado',
+                'aprovado' => 1,
+                'data' => Carbon::now()->subDays(5),
+
+                'evento_id' => 1,
+                'coordenador_id' =>  $this->pick($coordenadores, 0),
+                'proponente_id' => $this->pick($proponentes, 0),
+
+                'linkGrupoPesquisa' => 'link',
+                'linkLattesEstudante' => 'link',
+                'pontuacaoPlanilha' => 'link',
+
+                'anexoProjeto' => 'ok',
+                'anexoDecisaoCONSU' => 'ok',
+                'anexoPlanilhaPontuacao' => 'ok',
+                'anexoAutorizacaoComiteEtica' => 'ok',
+                'anexoLattesCoordenador' => 'ok',
+
+                'grande_area_id' => 1,
+                'area_id' => 1,
+                'sub_area_id' => 1,
+                'area_tematica_id' => 1,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id' => 2,
+                'titulo' => '[REPROVADO][EVENTO1][MESTRE]',
+                'status' => 'reprovado',
+                'aprovado' => 0,
+                'data' => Carbon::now()->subDays(4),
+
+                'evento_id' => 1,
+                'coordenador_id' =>   $this->pick($coordenadores, 1),
+                'proponente_id' => $this->pick($proponentes, 1),
+
+                'linkGrupoPesquisa' => 'link',
+                'linkLattesEstudante' => 'link',
+                'pontuacaoPlanilha' => 'link',
+
+                'anexoProjeto' => 'ok',
+                'anexoDecisaoCONSU' => 'ok',
+                'anexoPlanilhaPontuacao' => 'ok',
+                'anexoAutorizacaoComiteEtica' => null,
+                'anexoLattesCoordenador' => 'ok',
+
+                'grande_area_id' => 1,
+                'area_id' => 1,
+                'sub_area_id' => 1,
+                'area_tematica_id' => 1,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id' => 3,
+                'titulo' => '[APROVADO][EVENTO3][ALTA_PONTUACAO]',
+                'status' => 'aprovado',
+                'aprovado' => 1,
+                'data' => Carbon::now()->subDays(2),
+
+                'evento_id' => 3,
+                'coordenador_id' =>  $this->pick($coordenadores, 2),
+                'proponente_id' => $this->pick($proponentes, 2),
+
+                'linkGrupoPesquisa' => 'link',
+                'linkLattesEstudante' => 'link',
+                'pontuacaoPlanilha' => 'link',
+
+                'anexoProjeto' => 'ok',
+                'anexoDecisaoCONSU' => 'ok',
+                'anexoPlanilhaPontuacao' => 'ok',
+                'anexoAutorizacaoComiteEtica' => 'ok',
+                'anexoLattesCoordenador' => 'ok',
+
+                'grande_area_id' => 2,
+                'area_id' => 2,
+                'sub_area_id' => 2,
+                'area_tematica_id' => 2,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 4,
+                'titulo' => '[APROVADO][EVENTO1][DOUTOR][SEM-PARTICIPANTES]',
+                'status' => 'aprovado',
+                'aprovado' => 1,
+                'data' => Carbon::now()->subDays(5),
+
+                'evento_id' => 1,
+                'coordenador_id' =>  $this->pick($coordenadores, 0),
+                'proponente_id' => $this->pick($proponentes, 0),
+
+                'linkGrupoPesquisa' => 'link',
+                'linkLattesEstudante' => 'link',
+                'pontuacaoPlanilha' => 'link',
+
+                'anexoProjeto' => 'ok',
+                'anexoDecisaoCONSU' => 'ok',
+                'anexoPlanilhaPontuacao' => 'ok',
+                'anexoAutorizacaoComiteEtica' => 'ok',
+                'anexoLattesCoordenador' => 'ok',
+
+                'grande_area_id' => 1,
+                'area_id' => 1,
+                'sub_area_id' => 1,
+                'area_tematica_id' => 1,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
+    }
+    private function pick($coordenadores, $index)
+    {
+        return $coordenadores[$index % count($coordenadores)];
     }
 }

@@ -14,26 +14,25 @@ class AvaliadorTrabalhoSeeder extends Seeder
     public function run()
     {
         DB::table('avaliador_trabalho')->insert([
-            'avaliador_id' => 4,
-            'trabalho_id' => 1,
-            'acesso' => 3,
-            'pontuacao' => 9,
-            'recomendacao' => 'recomendacao teste',
-            'status' => true,
-            'parecer' => 'parecer teste',
+            [
+                'avaliador_id' => 1,
+                'trabalho_id' => 1,
+                'acesso' => 3,
+                'pontuacao' => 9,
+                'recomendacao' => 'ok',
+                'status' => true,
+                'parecer' => 'bom',
+            ],
+            [
+                'avaliador_id' => 2,
+                'trabalho_id' => 2,
+                'acesso' => 3,
+                'pontuacao' => 7,
+                'recomendacao' => 'ajustar',
+                'status' => true,
+                'parecer' => 'medio',
+            ],
         ]);
-
-        DB::table('avaliador_trabalho')->insert([
-            'avaliador_id' => 4,
-            'trabalho_id' => 2,
-            'acesso' => 3,
-            'pontuacao' => 9,
-            'recomendacao' => 'recomendacao teste',
-            'status' => true,
-            'parecer' => 'parecer teste',
-        ]);
-
-
     }
 }
    

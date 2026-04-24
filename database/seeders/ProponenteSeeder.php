@@ -5,42 +5,49 @@ use Illuminate\Support\Facades\DB;
 
 class ProponenteSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-      $user_id = DB::table('users')->where('name','Proponente')->select('id');
+        $users = DB::table('users')->where('tipo','proponente')->pluck('id');
 
-      DB::table('proponentes')->insert([
-        'user_id' => '4',
-        'SIAPE' => '123123123',
-        'cargo' => '123123123',
-        'vinculo' => '123123123',
-        'titulacaoMaxima' => 'Mestrado',
-        'anoTitulacao' => '123123123',
-        'areaFormacao' => '123123123',        
-        'bolsistaProdutividade' => '123123123',
-        'nivel' => '123123123',
-        'linkLattes' => 'http://lattes.cnpq.br/8363536830656923',
+        $dados = [
+            [
+                'titulacaoMaxima' => 'Mestrado',
+                'anoTitulacao' => 2018,
+                'areaFormacao' => 'Computação',
+                'bolsistaProdutividade' => 'Não',
+                'nivel' => '2',
+            ],
+            [
+                'titulacaoMaxima' => 'Doutorado',
+                'anoTitulacao' => 2015,
+                'areaFormacao' => 'Engenharia de Software',
+                'bolsistaProdutividade' => 'Sim',
+                'nivel' => '1A',
+            ],
+            [
+                'titulacaoMaxima' => 'Doutorado',
+                'anoTitulacao' => 2020,
+                'areaFormacao' => 'Inteligência Artificial',
+                'bolsistaProdutividade' => 'Não',
+                'nivel' => '1B',
+            ],
+        ];
 
-      ]);
-      // $user_id = DB::table('users')->where('name','Gabriel')->pluck('id');
+        foreach ($users as $index => $user_id) {
+            $base = $dados[$index % count($dados)];
 
-      // DB::table('proponentes')->insert([
-      //   'user_id' => '1',
-      //   'SIAPE' => '123123123',
-      //   'cargo' => '123123123',
-      //   'vinculo' => '123123123',
-      //   'titulacaoMaxima' => 'Mestrado',
-      //   'anoTitulacao' => '123123123',
-      //   'areaFormacao' => '123123123',        
-      //   'bolsistaProdutividade' => '123123123',
-      //   'nivel' => '123123123',
-      //   'linkLattes' => 'http://lattes.cnpq.br/8363536830656923',
-
-      // ]);
+            DB::table('proponentes')->insert([
+                'user_id' => $user_id,
+                'SIAPE' => 'SIAPE' . $user_id,
+                'cargo' => 'Professor',
+                'vinculo' => 'Efetivo',
+                'titulacaoMaxima' => $base['titulacaoMaxima'],
+                'anoTitulacao' => $base['anoTitulacao'],
+                'areaFormacao' => $base['areaFormacao'],
+                'bolsistaProdutividade' => $base['bolsistaProdutividade'],
+                'nivel' => $base['nivel'],
+                'linkLattes' => 'http://lattes.cnpq.br/' . rand(1000000000000000, 9999999999999999),
+            ]);
+        }
     }
 }

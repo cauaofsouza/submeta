@@ -11,22 +11,52 @@ class ParticipanteSeeder extends Seeder
      */
     public function run()
     {
-        $user_id = DB::table('users')->where('name', 'Participante1')->pluck('id');
+        $users = DB::table('users')
+            ->where('tipo', 'participante')
+            ->pluck('id')
+            ->toArray();
 
-        DB::table('participantes')->insert([
-            'user_id' => $user_id[0],
-        ]);
+        // pega trabalhos com seu evento
+        $trabalhos = DB::table('trabalhos')
+            ->select('id', 'evento_id')
+            ->get();
 
-        // $participante = App\Participante::find(1);
-        // $user = App\User::where('name','Participante1')->first();
-        // $user->participantes()->save($participante);
+        // mapa: evento_id → limite de participantes
+        $eventos = DB::table('eventos')
+            ->pluck('numParticipantes', 'id')
+            ->toArray();
+        // contador por trabalho
+        $contador = [];
+        foreach ($trabalhos as $trab) {
+            $contador[$trab->id] = 0;
+        }
 
-        // $user->save();
+        foreach ($users as $userId) {
 
-        //        $user_id = DB::table('users')->where('name', 'Participante2')->pluck('id');
-        //
-        //        DB::table('participantes')->insert([
-        //            'user_id' => $user_id[0],
-        //        ]);
+            $alocado = false;
+
+            foreach ($trabalhos as $trab) {
+
+                $limite = $eventos[$trab->evento_id] ?? 1;
+
+                if ($contador[$trab->id] < $limite) {
+
+                    DB::table('participantes')->insert([
+                        'user_id' => $userId,
+                        'trabalho_id' => $trab->id,
+
+                    ]);
+
+                    $contador[$trab->id]++;
+                    $alocado = true;
+                    break;
+                }
+            }
+
+            if (!$alocado) {
+                // participante fica sem trabalho
+                continue;
+            }
+        }
     }
 }
