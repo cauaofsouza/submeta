@@ -187,8 +187,9 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/arquivar/projeto', 'TrabalhoController@arquivar')->name('projeto.arquivar');
     Route::get('/arquivar/plano', 'ArquivoController@arquivar')->name('arquivo.arquivar');
 
-    //######### Imprimir Resultado #################################
+    //######### Imprimir Resultado | EXPORTAR RANKING #################################
     Route::get('/usuarios/showResultados/imprimir', 'AdministradorController@imprimirResultados')->name('resultados.gerar');
+    Route::get('/exportar-ranking', 'AdministradorController@exportarRanking')->name('exportar.ranking');
 
     //##########  Relatórios
     Route::get('/projeto/planosTrabalho/{id}', 'ArquivoController@listar')->name('planos.listar');

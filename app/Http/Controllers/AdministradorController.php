@@ -13,6 +13,7 @@ use App\AvaliacaoTrabalho;
 use App\CampoAvaliacao;
 use App\CoordenadorComissao;
 use App\Evento;
+use App\Exports\RankingTrabalhoExport;
 use App\FuncaoParticipantes;
 use App\GrandeArea;
 use App\Mail\EmailLembrete;
@@ -36,6 +37,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use DB;
 use App\AreaTematica;
@@ -1419,5 +1421,49 @@ class AdministradorController extends Controller
         $pdf = PDF::loadView('/administrador/resultadosProjetosCotas', compact('trabalhosDoutor', 'trabalhosAmpla', 'evento'));
 
         return $pdf->setPaper('a4')->stream('Resultados.pdf');
+    }
+
+
+/*
+     * Faz o ranqueamento dos trabalhos por MEDIA GERAL DO RELATORIO FINAL
+     * */
+    public function exportarRanking(Request $request)
+    {
+        $evento = Evento::findOrFail($request->evento_id);
+        $trabalhos = Trabalho::where('evento_id', $evento->id)->get();
+
+        $ranking = [];
+
+        foreach ($trabalhos as $trabalho) {
+            $arquivos = Arquivo::where('trabalhoId', $trabalho->id)->get();
+            $avals_projeto = [];
+            $media_avaliacoes = [];
+
+            foreach ($arquivos as $arquivo) {
+                array_push($avals_projeto, AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get());
+            }
+
+            foreach ($avals_projeto as $avals) {
+                array_push($media_avaliacoes, $this->get_info_avaliacoes($avals));
+            }
+
+            $mediaGeral = count($media_avaliacoes) > 0
+                ? collect($media_avaliacoes)->avg('media_geral_relat')
+                : 0;
+
+            $ranking[] = [
+                'titulo'      => $trabalho->titulo,
+                'media_geral' => $mediaGeral,
+            ];
+        }
+
+        usort($ranking, function($a, $b){
+        return $b['media_geral'] <=> $a['media_geral'];
+        });
+
+        return Excel::download(
+            new RankingTrabalhoExport($ranking),
+            'ranqueamento_' . $evento->nome . '.xlsx'
+        );
     }
 }
