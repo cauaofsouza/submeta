@@ -3,133 +3,157 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UsuarioSeeder extends Seeder
 {
-  /**
-   * Run the database seeds.
-   *
-   * @return void
-   */
-  public function run()
-  {
-    DB::table('users')->insert([
-      'name' => 'Administrador',
-      'email' => 'admin@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'administrador',
-      'email_verified_at' => '2020-01-01'
-    ]);
+    public function run()
+    {
+        DB::table('users')->insert([
 
-    DB::table('users')->insert([
-      'name' => 'AdministradorResponsavel1',
-      'email' => 'adminResp1@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'administradorResponsavel',
-      'email_verified_at' => '2020-01-01'
-    ]);
-    DB::table('users')->insert([
-      'name' => 'AdministradorResponsavel2',
-      'email' => 'adminResp2@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'administradorResponsavel',
-      'email_verified_at' => '2020-01-01'
-    ]);
+            // =====================
+            // ADMIN
+            // =====================
+            [
+                'id' => 1,
+                'name' => '[ADMIN]',
+                'email' => 'admin@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'administrador',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    DB::table('users')->insert([
-      'name' => 'Proponente',
-      'email' => 'usuario@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'proponente',
-      'email_verified_at' => '2020-01-01'
-    ]);
+            // =====================
+            // COORDENADORES
+            // =====================
+            [
+                'id' => 2,
+                'name' => '[COORDENADOR][1]',
+                'email' => 'coord1@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'coordenador',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 3,
+                'name' => '[COORDENADOR][2]',
+                'email' => 'coord2@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'coordenador',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    DB::table('users')->insert([
-      'name' => 'Gabriel',
-      'email' => 'gabriel.uag.ufrpe@gmail.com',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'proponente',
-      'email_verified_at' => '2020-01-01'
-    ]);
+            // =====================
+            // PROPONENTES
+            // =====================
+            [
+                'id' => 4,
+                'name' => '[PROPONENTE][1]',
+                'email' => 'prop1@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'proponente',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 5,
+                'name' => '[PROPONENTE][2]',
+                'email' => 'prop2@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'proponente',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 6,
+                'name' => '[PROPONENTE][3]',
+                'email' => 'prop3@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'proponente',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    DB::table('users')->insert([
-      'name' => 'Coordenador1',
-      'email' => 'coordenador1@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'coordenador',
-      'email_verified_at' => '2020-01-01'
-    ]);
+            // =====================
+            // PARTICIPANTES
+            // =====================
+            [
+                'id' => 7,
+                'name' => '[PARTICIPANTE][1]',
+                'email' => 'part1@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'participante',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 8,
+                'name' => '[PARTICIPANTE][2]',
+                'email' => 'part2@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'participante',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 9,
+                'name' => '[PARTICIPANTE][3]',
+                'email' => 'part3@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'participante',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    DB::table('users')->insert([
-      'name' => 'Coordenador2',
-      'email' => 'coordenador2@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'coordenador',
-      'email_verified_at' => '2020-01-01'
-    ]);
+            // =====================
+            // AVALIADORES
+            // =====================
+            [
+                'id' => 10,
+                'name' => '[AVALIADOR][1]',
+                'email' => 'aval1@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'avaliador',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 11,
+                'name' => '[AVALIADOR][2]',
+                'email' => 'aval2@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'avaliador',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    DB::table('users')->insert([
-      'name' => 'Participante1',
-      'email' => 'part1@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'participante',
-      'email_verified_at' => '2020-01-01'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Avaliador1',
-      'email' => 'aval1@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'avaliador',
-      'email_verified_at' => '2020-01-01'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Avaliador2',
-      'email' => 'aval2@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'avaliador',
-      'email_verified_at' => '2020-01-01'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Avaliador3',
-      'email' => 'aval3@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'avaliador',
-      'email_verified_at' => '2020-01-01'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Avaliador4',
-      'email' => 'aval4@ufrpe.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'avaliador',
-      'email_verified_at' => '2020-01-01'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Planejamento Prec',
-      'email' => 'planejamento.prec@ufape.edu.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'coordenador',
-      'email_verified_at' => '2023-05-17'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Coordenador Planejamento',
-      'email' => 'coorplan.prec@ufape.edu.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'coordenador',
-      'email_verified_at' => '2023-05-17'
-    ]);
-
-    DB::table('users')->insert([
-      'name' => 'Coordenador NITE',
-      'email' => 'nite@ufape.edu.br',
-      'password' => Hash::make('12345678'),
-      'tipo' => 'coordenador',
-      'email_verified_at' => '2023-06-06'
-    ]);
-  }
+            // =====================
+            // ADMIN RESPONSÁVEL
+            // =====================
+            [
+                'id' => 12,
+                'name' => '[ADMIN_RESPONSAVEL]',
+                'email' => 'adminresp@ufrpe.br',
+                'password' => Hash::make('10203040'),
+                'tipo' => 'administradorResponsavel',
+                'email_verified_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+    }
 }
