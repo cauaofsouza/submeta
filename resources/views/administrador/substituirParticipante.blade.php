@@ -30,7 +30,7 @@
                                 </h5>
                             </div>
                             <div class="card-body">
-                            @foreach($participantes as $i => $participante)
+                            @forelse($participantes as $i => $participante)
                                     <div class="row"style="margin-bottom: 20px;">
                                         <div class="col-10">
                                             <h4 style="font-size:20px">{{$participante->user->name}}</h4>
@@ -101,11 +101,6 @@
 
                                                 <div class="modal-body">
                                                     <div class="row">
-                                                        <!-- <div class="col-4">
-                                                            <button  style="float: right; width:220px;" type="button" id="btnSubmitDiscente" class="btn btn-info" onclick="subsDiscenteDados({{$participante->id}})">
-                                                                Substituir Participante
-                                                            </button>
-                                                        </div> -->
                                                         <div class="col-4" style="text-align: center; margin-left: 45px;">
                                                             <button style=" width:220px;" type="button" id="btnSubmitManter" class="btn btn-info" onclick="subsDiscentePlano({{$participante->id}})">
                                                                 Substituir Plano de Trabalho
@@ -734,7 +729,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="alert alert-warning mt-3" role="alert">
+                                        Não há participantes ativos nesse projeto.
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
@@ -1009,7 +1008,7 @@
         var idParticipante = checkboxInput.id;
         var tituloPlano = document.getElementById('nomePlanoTrabalho'+idParticipante);
         var anexoPlano = document.getElementById('anexoPlanoTrabalho'+idParticipante);
-        var planoAtual =<?php echo json_encode($participantes->first()->planoTrabalho); ?>;
+        var planoAtual = <?php echo json_encode(optional($participantes->first())->planoTrabalho); ?>;
         var arquivo = document.getElementById('arquivo'+idParticipante);
 
         if(checkboxInput.checked){
@@ -1168,13 +1167,15 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        let cpf = $(`#cpf_consulta${integranteAntigoId}`).val();
+        cpf = cpf.replace(/\D/g, ''); // remove tudo que não é número
 
         $.ajax({
             url: '{{ route('trabalho.buscarUsuario') }}',
             type: 'POST',
             dataType: 'json',
             data: {
-                'cpf_consulta': $(`#cpf_consulta${integranteAntigoId}`).val(),
+                'cpf_consulta': cpf,
                 'funcao': $(`#funcao_participante${integranteAntigoId}`).val()
             },
 
