@@ -8,35 +8,34 @@
         </div>
     @endif
 
-    <div class="row justify-content-center">
-            <div class="col-sm-12">
-                <div class="row" >
-                    <div class="col-sm-4">
-                        <div class="row">
-                        <div class="col-sm-2 noPrint">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-2">
                             <button class="btn" onclick="buscarProjeto(this.parentElement.parentElement.children[1].children[0])">
-                            <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+                                <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                             </button>
                         </div>
-                        <div class="col-sm-10 noPrint">
+                        <div class="col-sm-10">
                             <input type="text" class="form-control form-control-edit" placeholder="Digite o nome do projeto" onkeyup="buscarProjeto(this)">
                         </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-1">
-                    </div>
-                    <div class="col-sm-5 " style="float: center;">
-                        <h4 class="titulo-table">Resultados</h4>
-                    </div>
-                    <div class="col-sm-2 noPrint">
-                        <form>
-                            <input type="button" value="Imprimir" class="btn btn-primary float-right"  onclick="window.print()"/>
-                        </form>
                     </div>
                 </div>
-                <hr>
+
+                <div class="col-sm-4 noPrint text-center">
+                    <h4 class="titulo-table">Resultados</h4>
+                </div>
+
+                <div class="col-sm-4 noPrint d-flex justify-content-end align-items-center">
+                    <a href="{{ route('exportar.ranking', ['evento_id' => $evento->id]) }}"
+                       class="btn btn-success mr-2">
+                        Exportar Ranking
+                    </a>
+                    <input type="button" value="Imprimir" class="btn btn-primary" onclick="window.print()"/>
+                </div>
             </div>
+            <hr class="noPrint">
         </div>
 
 
