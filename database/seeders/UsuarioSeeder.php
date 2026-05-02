@@ -155,5 +155,6 @@ class UsuarioSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
+        DB::statement("SELECT setval('users_id_seq', (SELECT MAX(id) FROM users))");
     }
 }
