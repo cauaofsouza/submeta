@@ -16,7 +16,17 @@
           <div class="col-md-12"><h5 style="color: #1492E6; font-size: 21px;">{{$projeto->titulo}}</h5></div>
           <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold">{{$edital->nome}}</h6></div>
         </div>
+          @if($edital->natureza_id == 3)
+              <div style="padding-top: 15px">
+                  @if($projeto->programaDeExtensao != null){{-- testar !!--}}
+                      @include('evento.formulario.partials.programa-extensao-link')
+                  @else
+                      @include('evento.formulario.partials.programa-extensao-search')
+                  @endif
+              </div>
+          @endif
       </div>
+
     </div>
   </div>
 </div>
@@ -42,4 +52,5 @@
       @endif
     </div>
   </div>
+
 <!--X projeto X-->

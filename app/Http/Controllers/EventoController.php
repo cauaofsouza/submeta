@@ -835,14 +835,13 @@ class EventoController extends Controller
         return response()->download($path);
     }
 
-    // public function baixarModelos($id) {
-    //     $evento = Evento::find($id);
+    public function buscarProgramasExtensao(Request $request)
+    {
+        $programas = Evento::where('tipo', 'PROGRAMA_EXTENSAO')//CRIAR UM PARA TESTE
+            ->where('titulo', 'ILIKE', '%' . $request->busca . '%')
+            ->limit(3)
+            ->get(['id', 'titulo']);
 
-    //     if (Storage::disk()->exists($evento->modeloDocumento)) {
-    //         ob_end_clean();
-    //         return Storage::download($evento->modeloDocumento);
-    //     }
-
-    //     return abort(404);
-    // }
+        return response()->json($programas);
+    }
 }
