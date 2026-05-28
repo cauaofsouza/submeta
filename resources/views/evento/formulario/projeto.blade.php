@@ -76,7 +76,7 @@
             @endif
           @endif
 
-            @if($edital->natureza_id ==3 )
+            @if($edital->natureza_id == 3 )
                 @if($edital->tipo == "PIBAC" || $edital->tipo == "CONTINUO-AC")
                     <div class="form-group col-md-12">
                         <label for="areaTematica" class="col-form-label" style="font-weight: bold">{{ __('Área(s) temática(s) principal(is) da atividade, de acordo com a Política de Arte e Cultura da UFAPE') }} <span style="color: red; font-weight:bold">*</span></label>
@@ -149,8 +149,10 @@
                   </div>
             @endif
         </div>
-        </div>
-    </div>
+        @if($edital->natureza_id == 3) {{-- para EXTENSAO, se nao der certo o problema e a seed que nao esta settando natureza | testar se ta dando certo--}}
+          @include('evento.formulario.partials.programa-extensao-search')
+        @endif
+      </div>
     </div>
   </div>
-<!--X projeto X-->
+</div>
