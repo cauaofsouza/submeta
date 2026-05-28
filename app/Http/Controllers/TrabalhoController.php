@@ -111,10 +111,8 @@ class TrabalhoController extends Controller
         $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$edital->id)->where('status', 'Rascunho')
                                 ->orderByDesc('updated_at')->first();
 
-      // dd($estados);
 
         return view('evento.submeterTrabalho',[
-        // return view('evento.backupForm',[
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes,
@@ -423,7 +421,7 @@ class TrabalhoController extends Controller
 
     public function show($id)
     {
-        $projeto = Trabalho::find($id);
+        $projeto = Trabalho::with('programaDeExtensao')->find($id);//TODO: testar
         if(Auth::user()->id != $projeto->proponente->user->id){
             return redirect()->back();
         }
@@ -962,7 +960,7 @@ class TrabalhoController extends Controller
 
 //xxfa
 
-    public function update(UpdateTrabalho $request, $id)
+    public function update(UpdateTrabalho $request, $id)//testar se funcionou a atribuicao do id
     {
         try {
             if (!$request->has('rascunho')) {
@@ -978,6 +976,20 @@ class TrabalhoController extends Controller
             $request->merge([
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
+
+            if ($request->filled('programa_de_extensao_id')) {
+
+                $request->merge([
+                    'programa_extensao_status' => 'pendente'
+                ]);
+
+            } else {
+
+                $request->merge([
+                    'programa_extensao_status' => null
+                ]);
+            }
+
             $trabalho = Trabalho::find($id);
             $trabalho->ods()->sync($request->ods);
             $proponente = Proponente::where('user_id', Auth::user()->id)->first();
