@@ -40,6 +40,8 @@ class Trabalho extends Model
       'proponente_id',
       'pivot',
       'area_tematica_id',
+      'programa_de_extensao_id',
+      'programa_extensao_status',
   ];
 
 
@@ -145,5 +147,10 @@ class Trabalho extends Model
 
     public function area_tematica_pibac(){
         return $this->belongsToMany('App\AreaTematicaPibac', 'area_tematica_pibac_trabalhos', 'trabalho_id');
+    }
+
+    public function programaDeExtensao()
+    {
+        return $this->belongsTo(Evento::class, 'programa_de_extensao_id');
     }
 }
