@@ -66,6 +66,13 @@ class EventoController extends Controller
         return view('evento.criarEvento', ['coordenadors' => $coordenadors, 'naturezas' => $naturezas, 'ontem' => $yesterday]);
     }
 
+    public function createProgramaExtensao(){
+        return view('evento.programaExtensao', [
+            'coordenadors' => CoordenadorComissao::first()->with('user')->get(),
+            'areas_tematicas' => AreaTematica::orderBy('nome')->get(),
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

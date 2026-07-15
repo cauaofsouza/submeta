@@ -1,5 +1,6 @@
 <?php
 
+use App\CoordenadorComissao;
 use App\Notifications\SubmissaoNotification;
 use App\Trabalho;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,7 @@ Route::get('/email', function (Request $request) {
     return 'Ok';
     // Auth::user()->notify(new SubmissaoTrabalho('teste'));
 });
+
 
 Route::get('/baixarModeloAvaliacao', 'AdministradorController@baixarModeloAvaliacao')->name('baixarModelo');
 Route::get('/', 'UserController@index')->name('home-user');
@@ -373,6 +375,7 @@ Route::prefix('evento')->name('evento.')->group(function () {
     Route::post('/setResumo', 'EventoController@setResumo')->name('setResumo')->middleware('checkAdministrador');
     Route::post('/setFoto', 'EventoController@setFotoEvento')->name('setFotoEvento')->middleware('checkAdministrador');
     Route::get('/buscar', 'EventoController@buscarProgramasExtensao')->name('buscar')->middleware('auth');
+    Route::get('/criarProgramaDeExtensao', 'EventoController@createProgramaExtensao')->name('criarProgramaExtensao')->middleware('checkRoles:coordenador,administrador');
 });
 
 //########## Rotas de administrador responsavel (Reitor ou pro-reitor)########

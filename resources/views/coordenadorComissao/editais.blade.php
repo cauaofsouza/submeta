@@ -13,6 +13,8 @@
       </div>
       <div class="col-sm-8 align-text-top aling-end ">
           <a href="{{route('evento.criar')}}" class="btn btn-info" style="float: right;">Criar Edital</a>
+        <a href="{{route('evento.criarProgramaExtensao')}}" class="btn btn-info" style="float: right; margin-right:20px">Criar Programa de Extensão</a>
+
       </div>
 
     </div>
