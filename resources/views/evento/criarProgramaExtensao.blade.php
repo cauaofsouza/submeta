@@ -45,11 +45,11 @@
                                 {{ __('Coordenador do Programa:') }}<span style="color:red; font-weight:bold;">*</span>
                             </label>
                         </div>
-                        <div class="col-md-1 text-sm-right">
-                            <a type="button" data-toggle="modal" data-target="#modalCoord">
-                                <img src="{{ asset('img/icons/add.ico') }}" style="width:30px" alt="Adicionar">
-                            </a>
-                        </div>
+                        <a type="button" data-toggle="modal" data-target="#modalCoordenadorPrograma"
+                           onclick="openModal('Coordenador do Programa', 'coordenador_id', 'coordenador_name', 'vice_coordenador_id')">
+                            <img src="{{ asset('img/icons/add.ico') }}" style="width:30px" alt="Adicionar">
+                        </a>
+
                     </div>
                     <input id="coordenador_id" name="coordenador_id" class="form-control" value="{{ old('coordenador_id') }}" hidden>
                     <input id="coordenador_name" name="coordenador_name"
@@ -73,7 +73,8 @@
                             </label>
                         </div>
                         <div class="col-md-1 text-sm-right">
-                            <a type="button" data-toggle="modal" data-target="#modalViceCoord">
+                            <a type="button" data-toggle="modal" data-target="#modalCoordenadorPrograma"
+                               onclick="openModal('Vice-Coordenador do Programa', 'vice_coordenador_id', 'vice_coordenador_name', 'coordenador_id')">
                                 <img src="{{ asset('img/icons/add.ico') }}" style="width:30px" alt="Adicionar">
                             </a>
                         </div>
@@ -117,61 +118,6 @@
                 </div>
             </div>
 
-            {{-- Área Temática Principal + Secundária --}}
-            <div class="row justify-content-start mt-2">
-
-                {{-- Principal (selecionar apenas uma) --}}
-                <div class="col-sm-6">
-                    <label class="col-form-label">
-                        {{ __('Área Temática (Principal):') }}<span style="color:red; font-weight:bold;">*</span>
-                        <small class="text-muted d-block">Selecione apenas uma.</small>
-                    </label>
-                    @foreach($areas_tematicas as $area_tematica)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
-                                   name="area_tematica_principal[]"
-                                   id="area_principal_{{ $area_tematica->id }}"
-                                   value="{{ $area_tematica->id }}"
-                                   {{ in_array($area_tematica->id, old('area_tematica_principal', [])) ? 'checked' : '' }}
-                                   onchange="limitCheckbox('area_tematica_principal', 'area_tematica_secundaria', this)">
-                            <label class="form-check-label" for="area_principal_{{ $area_tematica->id }}">
-                                {{ $area_tematica->nome }}
-                            </label>
-                        </div>
-                    @endforeach
-                    @error('area_tematica_principal')
-                    <span class="text-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                {{-- Secundária (se houver, selecionar apenas uma) --}}
-                <div class="col-sm-6">
-                    <label class="col-form-label">
-                        {{ __('Área Temática (Secundária):') }}
-                        <small class="text-muted d-block">Se houver, selecione apenas uma.</small>
-                    </label>
-                    @foreach($areas_tematicas as $area_tematica)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
-                                   name="area_tematica_secundaria[]"
-                                   id="area_secundaria_{{ $area_tematica->id }}"
-                                   value="{{ $area_tematica->id }}"
-                                   {{ in_array($area_tematica->id, old('area_tematica_secundaria', [])) ? 'checked' : '' }}
-                                   onchange="limitCheckbox('area_tematica_secundaria', 'area_tematica_principal', this)">
-                            <label class="form-check-label" for="area_secundaria_{{ $area_tematica->id }}">
-                                {{ $area_tematica->nome }}
-                            </label>
-                        </div>
-                    @endforeach
-                    @error('area_tematica_secundaria')
-                    <span class="text-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
 
             {{-- Descrição --}}
             <div class="row justify-content-center mt-2">
@@ -202,18 +148,18 @@
             <div class="row justify-content-center" style="margin-top:10px">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="pdfEdital">
+                        <label for="pdf_edital">
                             Anexar edital:<span style="color:red; font-weight:bold;">*</span>
                         </label>
                         @if(old('pdfEditalPreenchido') != null)
-                            <a id="pdfEditalTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'pdfEdital']) }}">Arquivo atual</a>
+                            <a id="pdfEditalTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'pdf_edital']) }}">Arquivo atual</a>
                         @endif
                         <input type="hidden" id="pdfEditalPreenchido" name="pdfEditalPreenchido" value="{{ old('pdfEditalPreenchido') }}">
                         <input type="file" accept=".pdf"
-                               class="form-control-file pdf @error('pdfEdital') is-invalid @enderror"
-                               name="pdfEdital" id="pdfEdital" onchange="exibirAnexoTemp(this)">
+                               class="form-control-file pdf @error('pdf_edital') is-invalid @enderror"
+                               name="pdf_edital" id="pdf_edital" onchange="exibirAnexoTemp(this)">
                         <small>O arquivo deve estar em formato PDF e ter até 2MB.</small>
-                        @error('pdfEdital')
+                        @error('pdf_edital')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -227,7 +173,7 @@
                             Anexar modelos de documentos:
                         </label>
                         @if(old('modeloDocumentoPreenchido') != null)
-                            <a id="modeloDocumentoTemp" href="{{ route('baixar.modelo.evento.temp', ['nomeAnexo' => 'modeloDocumento']) }}">Arquivo atual</a>
+                            <a id="modeloDocumentoTemp" href="{{ route('baixar.modelo.evento.temp', ['nomeAnexo' => 'modelo_documento']) }}">Arquivo atual</a>
                         @endif
                         <input type="hidden" id="modeloDocumentoPreenchido" name="modeloDocumentoPreenchido" value="{{ old('modeloDocumentoPreenchido') }}">
                         <input type="file" accept=".doc,.docx,.pdf,.zip"
@@ -256,20 +202,20 @@
             </div>
         </form>
     </div>
+    {{-- MODAL COORDENADOR --}}
 
-    {{-- ===================== MODAL COORDENADOR ===================== --}}
-    <div class="modal fade" id="modalCoord" tabindex="-1" role="dialog" aria-labelledby="modalCoordLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalCoordLabel" style="color:#1492E6">Coordenadores</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#1492E6">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <thead>
+<div class="modal fade" id="modalCoordenadorPrograma" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCoordenadorProgramaLabel" style="color:#1492E6"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#1492E6">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Email</th>
@@ -277,69 +223,28 @@
                             <th>Instituição</th>
                             <th>Seleção</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody id="modalCoordenadorProgramaBody">
                         @foreach($coordenadors as $coordenador)
-                            <tr>
+                            <tr data-id="{{ $coordenador->id }}">
                                 <td>{{ $coordenador->user->name }}</td>
                                 <td>{{ $coordenador->user->email }}</td>
                                 <td>{{ $coordenador->user->celular ?? 'Não Definido' }}</td>
                                 <td>{{ $coordenador->user->instituicao ?? 'Não Definida' }}</td>
                                 <td style="text-align-last:center">
                                     <input type="button" class="btn btn-primary btn-sm" value="Definir"
-                                           onclick="defCoord({{ $coordenador->id }}, '{{ $coordenador->user->name }}')"
+                                           onclick="defPessoa({{ $coordenador->id }}, '{{ $coordenador->user->name }}')"
                                            style="width:100px">
                                 </td>
                             </tr>
                         @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
-    {{-- ===================== MODAL VICE-COORDENADOR ===================== --}}
-    <div class="modal fade" id="modalViceCoord" tabindex="-1" role="dialog" aria-labelledby="modalViceCoordLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalViceCoordLabel" style="color:#1492E6">Vice-Coordenadores</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#1492E6">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Celular</th>
-                            <th>Instituição</th>
-                            <th>Seleção</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($coordenadors as $coordenador)
-                            <tr>
-                                <td>{{ $coordenador->user->name }}</td>
-                                <td>{{ $coordenador->user->email }}</td>
-                                <td>{{ $coordenador->user->celular ?? 'Não Definido' }}</td>
-                                <td>{{ $coordenador->user->instituicao ?? 'Não Definida' }}</td>
-                                <td style="text-align-last:center">
-                                    <input type="button" class="btn btn-primary btn-sm" value="Definir"
-                                           onclick="defViceCoord({{ $coordenador->id }}, '{{ $coordenador->user->name }}')"
-                                           style="width:100px">
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
 @endsection
 
@@ -359,23 +264,11 @@
 
         function exibirAnexoTemp(file) {
             const map = {
-                'pdfEdital':       'pdfEditalPreenchido',
+                'pdf_edital':       'pdfEditalPreenchido',
                 'modeloDocumento': 'modeloDocumentoPreenchido',
             };
             if (map[file.id]) {
                 document.getElementById(map[file.id]).value = 'sim';
-            }
-        }
-        function limitCheckbox(groupName, otherGroupName, clicked) {
-            // enforce max 1 in own group
-            document.querySelectorAll(`input[name="${groupName}[]"]`).forEach(function (checkbox) {
-                if (checkbox !== clicked) checkbox.checked = false;
-            });
-
-            // if same value is checked in the other group, uncheck it there
-            if (clicked.checked) {
-                const mirror = document.querySelector(`input[name="${otherGroupName}[]"][value="${clicked.value}"]`);
-                if (mirror) mirror.checked = false;
             }
         }
 
@@ -393,5 +286,29 @@
                 $(this).val('');
             }
         });
+
+        var currentTargetId   = null;
+        var currentTargetName = null;
+
+        function openModal(label, targetId, targetNameId, excludeId) {
+            currentTargetId   = targetId;
+            currentTargetName = targetNameId;
+
+            // set title
+            document.getElementById('modalCoordenadorProgramaLabel').innerText = label;
+
+            // hide whoever is already selected in the other field
+            var blockedId = document.getElementById(excludeId).value;
+
+            document.querySelectorAll('#modalCoordenadorProgramaBody tr').forEach(function (row) {
+                row.style.display = (row.dataset.id == blockedId) ? 'none' : '';
+            });
+        }
+
+        function defPessoa(id, name) {
+            document.getElementById(currentTargetId).value   = id;
+            document.getElementById(currentTargetName).value = name;
+            $('#modalCoordenadorPrograma').modal('hide');
+        }
     </script>
 @endsection
