@@ -302,6 +302,8 @@ Route::prefix('usuarios')->name('admin.')->group(function () {
     Route::get('/analisarProposta', 'AdministradorController@analisarProposta')->name('analisarProposta')->middleware('checkRoles:coordenador,administrador');
     Route::get('/showProjetos', 'AdministradorController@showProjetos')->name('showProjetos');
     Route::get('/showResultados', 'AdministradorController@showResultados')->name('showResultados')->middleware(['auth', 'verified']);
+    Route::get('/analisarProjetosProgramaExtensao/{column?}', 'AdministradorController@analisarTrabalhosProgramaExtensao')->name('analisar-trabalhos-programa-extensao')->middleware('checkRoles:coordenador,administrador');
+
 });
 
 Route::prefix('naturezas')->group(function () {
@@ -374,9 +376,20 @@ Route::prefix('evento')->name('evento.')->group(function () {
     Route::post('/editar/{id}', 'EventoController@update')->name('update')->middleware('checkRoles:coordenador,administrador');
     Route::post('/setResumo', 'EventoController@setResumo')->name('setResumo')->middleware('checkAdministrador');
     Route::post('/setFoto', 'EventoController@setFotoEvento')->name('setFotoEvento')->middleware('checkAdministrador');
-    Route::get('/buscar', 'EventoController@buscarProgramasExtensao')->name('buscar')->middleware('auth');
-    Route::get('/criarProgramaDeExtensao', 'EventoController@createProgramaExtensao')->name('criarProgramaExtensao')->middleware('checkRoles:coordenador,administrador');
+
 });
+
+//____________________________________PROGRAMA EXTENSAO _______________________________________________
+Route::prefix('programa-extensao')->name('programa.')->group(function () {
+    Route::get('/criar', 'ProgramaExtensaoController@create')->name('criar')->middleware('checkRoles:coordenador,administrador');
+    Route::post('/criar', 'ProgramaExtensaoController@store')->name('criar')->middleware('checkRoles:coordenador,administrador');
+    Route::get('/visualizar/{id}', 'ProgramaExtensaoController@show')->name('visualizar')->middleware('checkRoles:coordenador,administrador');
+    Route::get('/editar/{id}', 'ProgramaExtensaoController@edit')->name('editar')->middleware('checkRoles:coordenador,administrador');
+    Route::put('/{id}', 'ProgramaExtensaoController@update')->name('atualizar')->middleware('checkRoles:coordenador,administrador');
+    Route::get('/buscar', 'ProgramaExtensaoController@buscarProgramasExtensao')->name('buscar')->middleware('auth');
+});
+
+
 
 //########## Rotas de administrador responsavel (Reitor ou pro-reitor)########
 Route::prefix('adminResp')->name('adminResp.')->group(function () {
