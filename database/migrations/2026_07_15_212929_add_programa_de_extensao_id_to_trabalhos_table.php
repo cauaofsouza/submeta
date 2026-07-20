@@ -21,7 +21,7 @@ class AddProgramaDeExtensaoIdToTrabalhosTable extends Migration
 
             $table->foreign('programa_de_extensao_id')
                 ->references('id')
-                ->on('eventos')
+                ->on('programa_extensaos')
                 ->onDelete('set null');
         });
     }
