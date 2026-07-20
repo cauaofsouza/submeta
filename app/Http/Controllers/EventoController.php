@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use App\AreaTematica;
 use App\Atividade;
 use App\Evento;
 use App\Coautor;
@@ -66,12 +67,7 @@ class EventoController extends Controller
         return view('evento.criarEvento', ['coordenadors' => $coordenadors, 'naturezas' => $naturezas, 'ontem' => $yesterday]);
     }
 
-    public function createProgramaExtensao(){
-        return view('evento.programaExtensao', [
-            'coordenadors' => CoordenadorComissao::first()->with('user')->get(),
-            'areas_tematicas' => AreaTematica::orderBy('nome')->get(),
-        ]);
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -386,6 +382,8 @@ class EventoController extends Controller
             'hoje'              => $hoje
         ]);
     }
+
+
 
     public function showNaoLogado($id)
     {
@@ -842,13 +840,5 @@ class EventoController extends Controller
         return response()->download($path);
     }
 
-    public function buscarProgramasExtensao(Request $request)
-    {
-        $programas = Evento::where('tipo', 'PROGRAMA_EXTENSAO')//CRIAR UM PARA TESTE
-            ->where('titulo', 'ILIKE', '%' . $request->busca . '%')
-            ->limit(3)
-            ->get(['id', 'titulo']);
 
-        return response()->json($programas);
-    }
 }

@@ -141,6 +141,11 @@ class AdministradorController extends Controller
         ]);
     }
 
+    public function analisarTrabalhosProgramaExtensao(Request $request)
+    {
+        return view('administrador.analisarProgramaExtensao');
+    }
+
     //retorna a média das avaliações dos relatórios e apresentações,
     //o número de avaliações pendentes e duas listas com as avaliações parciais 
     //e finais respectivamente

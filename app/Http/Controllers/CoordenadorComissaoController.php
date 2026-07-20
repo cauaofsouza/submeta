@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ProgramaExtensao;
 use Auth;
 use Illuminate\Http\Request;
 use App\Evento;
@@ -30,10 +31,27 @@ class CoordenadorComissaoController extends Controller
     public function editais(){
 
     	$coordenador = CoordenadorComissao::with('user')->where('user_id', Auth()->user()->id)->first();
-    	$eventos = Evento::where('coordenadorId',$coordenador->id )->orderBy('created_at','DESC')->get();
-        
-        //dd($eventos);
-    	return view('coordenadorComissao.editais', ['eventos'=> $eventos]);
+        $eventos =  Evento::where('coordenadorId',$coordenador->id )->get()->map(function ($e) {
+            return [
+                'id'         => $e->id,
+                'nome'       => $e->nome,
+                'created_at' => $e->created_at,
+                'tipo'       => 'evento',
+                'tipoAvaliacao' => $e->tipoAvaliacao,
+            ];
+        });
+
+        $programas = ProgramaExtensao::where('coordenador_id',$coordenador->id )->get()->map(function ($p) {
+            return [
+                'id'         => $p->id,
+                'nome'       => $p->nome,
+                'created_at' => $p->created_at,
+                'tipo'       => 'programa',
+            ];
+        });
+
+        $listagem = $eventos->merge($programas)->sortByDesc('created_at')->values();
+    	return view('coordenadorComissao.editais', ['listagem' => $listagem]);
     }
     public function coordenadorComite(){
 
