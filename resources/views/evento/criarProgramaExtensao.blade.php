@@ -5,7 +5,7 @@
             <h1>Novo Programa de Extensão</h1>
         </div>
 
-        <form action="{{ route('evento.criarProgramaExtensao') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('programa.criar') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="tipo" value="PROGRAMA_DE_EXTENSAO">
 

@@ -141,4 +141,9 @@ class Evento extends Model
     return $this->hasMany('App\CampoAvaliacao');
 }
 
+    public function natureza()
+    {
+        return $this->belongsTo(Natureza::class, 'natureza_id');
+    }
+
 }

@@ -151,6 +151,6 @@ class Trabalho extends Model
 
     public function programaDeExtensao()
     {
-        return $this->belongsTo(Evento::class, 'programa_de_extensao_id');
+        return $this->belongsTo(ProgramaExtensao::class, 'programa_de_extensao_id');
     }
 }

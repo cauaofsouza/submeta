@@ -103,12 +103,28 @@
                         data-toggle="modal" data-target="#exampleModal{{ $item['id'] }}">
                   <img src="{{ asset('img/icons/logo_lixeira.png') }}" alt=""> Deletar
                 </button>
+
               </div>
             @endif
 
           </div>
         </td>
       </tr>
+      @if($item['tipo'] === 'evento')
+        @include('coordenadorComissao.partials.modalDeletarEvento', [
+            'id'        => $item['id'],
+            'nome'      => $item['nome'],
+            'rota'      => 'evento.deletar',
+            'tipoLabel' => 'o edital',
+        ])
+      @else
+        @include('coordenadorComissao.partials.modalDeletarEvento', [
+            'id'        => $item['id'],
+            'nome'      => $item['nome'],
+            'rota'      => 'programa.deletar',
+            'tipoLabel' => 'o programa',
+        ])
+      @endif
     @endforeach
     </tbody>
   </table>

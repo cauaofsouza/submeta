@@ -6,10 +6,14 @@ use App\CoordenadorComissao;
 use App\Evento;
 use App\Http\Requests\StoreProgramaExtensaoRequest;
 use App\Http\Requests\UpdateProgramaExtensaoRequest;
+use App\Notifications\SolicitacaoVinculacaoProgramaNotification;
 use App\ProgramaExtensao;
+use App\Proponente;
 use App\Trabalho;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
@@ -121,4 +125,24 @@ class ProgramaExtensaoController extends Controller
     {
 
     }
+
+    public function destroy($id)
+    {
+        $programa = ProgramaExtensao::findOrFail($id);
+
+        if ($programa->pdf_edital && Storage::exists($programa->pdf_edital)) {
+            Storage::delete($programa->pdf_edital);
+        }
+
+        if ($programa->modelo_documento && file_exists($programa->modelo_documento)) {
+            unlink($programa->modelo_documento);
+        }
+
+        $programa->delete();
+
+        return redirect()
+            ->route('coordenador.editais')
+            ->with(['mensagem' => 'Programa de Extensão deletado com sucesso!']);
+    }
+
 }

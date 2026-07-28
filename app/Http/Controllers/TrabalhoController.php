@@ -93,21 +93,22 @@ class TrabalhoController extends Controller
       'SE' => 'Sergipe',
       'TO' => 'Tocantins',
     );
-    
+
     public function index($id)
     {
+        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+        if($proponente == null){
+            return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
+        }
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
         $areaTematicas = AreaTematica::orderBy('nome')->get();
         $ODS = ObjetivoDeDesenvolvimentoSustentavel::orderBy('id')->get();
         $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
-        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
         $areaTematicasPibac = AreaTematicaPibac::orderBy('id')->get();
 
-        if($proponente == null){
-          return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
-        }
-        
+
+
         $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$edital->id)->where('status', 'Rascunho')
                                 ->orderByDesc('updated_at')->first();
 
@@ -421,7 +422,7 @@ class TrabalhoController extends Controller
 
     public function show($id)
     {
-        $projeto = Trabalho::with('programaDeExtensao')->find($id);//TODO: testar
+        $projeto = Trabalho::with('programaDeExtensao')->find($id);
         if(Auth::user()->id != $projeto->proponente->user->id){
             return redirect()->back();
         }

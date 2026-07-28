@@ -129,6 +129,49 @@
                 </div>
             </a>
             @endforeach
+            @foreach ($programas as $programa)
+                @if (Auth::check())
+                    @if($programa->vigencia_fim >= $hoje && $hoje >= $programa->vigencia_inicio)
+                        <a href="{{ route('programa.visualizar', ['id' => $programa->id]) }}" style="text-decoration: none" class="event-item aberto">
+                    @elseif($hoje > $programa->vigencia_fim)
+                        <a href="{{ route('programa.visualizar', ['id' => $programa->id]) }}" style="text-decoration: none" class="event-item encerrado">
+                    @else
+                        <a href="{{ route('programa.visualizar', ['id' => $programa->id]) }}" style="text-decoration: none" class="event-item vaiAbrir">
+                    @endif
+                @else
+                    @if($programa->vigencia_fim >= $hoje && $hoje >= $programa->vigencia_inicio)
+                        <a href="{{ route('programa.visualizar', ['id' => $programa->id]) }}" style="text-decoration: none" class="event-item aberto">
+                    @elseif($hoje > $programa->vigencia_fim)
+                        <a href="{{ route('programa.visualizar', ['id' => $programa->id]) }}" style="text-decoration: none" class="event-item encerrado">
+                    @else
+                        <a href="{{ route('programa.visualizar', ['id' => $programa->id]) }}" style="text-decentration: none" class="event-item vaiAbrir">
+                    @endif
+                @endif
+                <div class="card" style="width: 18rem; border-radius:12px; border-width:0px; margin:10px">
+                    <img src="{{asset('img/img_fundo_2.png')}}" class="card-img-top" alt="..." style="border-radius: 12px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="card-title">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-12">
+                                            <h3 style="color: #01487E; font-family:Arial, Helvetica, sans-serif; font-size:30px; font-weight:bold">{{ $programa->nome }}</h3>
+                                        </div>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row justify-content-lg-left" style="margin-left:1px; margin-right:1px">
+                            <div><img src="{{asset('img/icons/icon_submissao.png')}}" class="card-img-top" alt="..." style="width:45px; margin-right:15px"></div>
+                            <div class="form-group" style="text-align: left">
+                                <div style="font-weight: normal;color:black; font-family:Arial, Helvetica, sans-serif; font-size:18px; margin-bottom:-5px">Vigência</div>
+                                <div style="color: #909090">{{date('d/m/Y',strtotime($programa->vigencia_inicio))}} - {{date('d/m/Y',strtotime($programa->vigencia_fim))}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            @endforeach
                 <div id="empty-message" class="col-md-5" style="text-align: center;margin-top:1rem"><h5>Nenhum edital encontrado com esse status!</h5></div>
 
         @else

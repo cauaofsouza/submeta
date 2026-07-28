@@ -211,7 +211,7 @@
             </div>
             <div class="col-md-12" style="text-align: center;">
               @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao)
-                <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}">Cliquei aqui para submeter um projeto.</a>
+                <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}">Clique aqui para submeter um projeto.</a>
               @else
                 <a href="#">O periodo de submissão foi encerrado.</a>
               @endif

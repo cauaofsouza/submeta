@@ -18,7 +18,7 @@
         </div>
           @if($edital->natureza_id == 3)
               <div style="padding-top: 15px">
-                  @if($projeto->programaDeExtensao != null){{-- testar !!--}}
+                  @if($projeto->programaDeExtensao != null)
                       @include('evento.formulario.partials.programa-extensao-link')
                   @else
                       @include('evento.formulario.partials.programa-extensao-search')
