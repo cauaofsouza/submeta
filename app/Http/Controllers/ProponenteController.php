@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Desligamento;
+use App\ProgramaExtensao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -121,6 +122,20 @@ class ProponenteController extends Controller
             $hoje = $hoje->toDateString();
     
             return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos, 'hoje'=>$hoje]);
+        }else{
+            return redirect()->route('inicial');
+        }
+    }
+
+    public function projetosPrograma($id) {
+        $programa = ProgramaExtensao::find($id);
+
+        if(Auth::user()->proponentes != null){
+            $projetos = Trabalho::where('programa_de_extensao_id', '=', $id)->where('proponente_id', Auth::user()->proponentes->id)->orderBy('titulo')->paginate(10);
+            $hoje = Carbon::today('America/Recife');
+            $hoje = $hoje->toDateString();
+
+            return view('proponente.projetosPrograma')->with(['programa' => $programa, 'projetos' => $projetos, 'hoje'=>$hoje]);
         }else{
             return redirect()->route('inicial');
         }

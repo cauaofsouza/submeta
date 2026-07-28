@@ -46,6 +46,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/proponente/editais', 'ProponenteController@editais')->name('proponente.editais');
     Route::get('/projetos-submetidos', 'ProponenteController@projetosDoProponente')->name('proponente.projetos');
     Route::get('/projetos-edital/{id}', 'ProponenteController@projetosEdital')->name('proponente.projetosEdital')->middleware('auth');
+    Route::get('/projetos-programa/{id}', 'ProponenteController@projetosPrograma')->name('proponente.projetosPrograma')->middleware('auth');
     Route::post('/proponente/edital/{edital_id}/projeto/{projeto_id}/solicitar_desligamento/{participante_id}', 'ProponenteController@solicitarDesligamento')->name('proponente.solicitar.desligamento');
 
     //######## Rotas Avaliador  ####################################
@@ -387,6 +388,7 @@ Route::prefix('programa-extensao')->name('programa.')->group(function () {
     Route::put('/{id}', 'ProgramaExtensaoController@update')->name('atualizar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/buscar', 'ProgramaExtensaoController@buscarProgramasExtensao')->name('buscar')->middleware('auth');
     Route::delete('/excluir/{id}', 'ProgramaExtensaoController@destroy')->name('deletar')->middleware('checkRoles:coordenador,administrador');
+    Route::post('/{id}/solicitarVinculo', 'ProgramaExtensaoController@solicitarVinculoPrograma')->name('solicitarVinculo')->middleware('auth');
     Route::put('/{id}/aceitar', 'ProgramaExtensaoController@aceitarTrabalho')->name('aceitarTrabalho')->middleware('checkRoles:coordenador,administrador');
     Route::put('/{id}/rejeitar', 'ProgramaExtensaoController@rejeitarTrabalho')->name('rejeitarTrabalho')->middleware('checkRoles:coordenador,administrador');
 
