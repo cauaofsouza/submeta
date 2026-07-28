@@ -302,8 +302,7 @@ Route::prefix('usuarios')->name('admin.')->group(function () {
     Route::get('/analisarProposta', 'AdministradorController@analisarProposta')->name('analisarProposta')->middleware('checkRoles:coordenador,administrador');
     Route::get('/showProjetos', 'AdministradorController@showProjetos')->name('showProjetos');
     Route::get('/showResultados', 'AdministradorController@showResultados')->name('showResultados')->middleware(['auth', 'verified']);
-    Route::get('/analisarProjetosProgramaExtensao/{column?}', 'AdministradorController@analisarTrabalhosProgramaExtensao')->name('analisar-trabalhos-programa-extensao')->middleware('checkRoles:coordenador,administrador');
-
+    Route::get('/analisarProjetosProgramaExtensao/{column?}', 'AdministradorController@analisarTrabalhosPrograma')->name('analisar-trabalhos-programa-extensao')->middleware('checkRoles:coordenador,administrador');
 });
 
 Route::prefix('naturezas')->group(function () {
@@ -388,6 +387,9 @@ Route::prefix('programa-extensao')->name('programa.')->group(function () {
     Route::put('/{id}', 'ProgramaExtensaoController@update')->name('atualizar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/buscar', 'ProgramaExtensaoController@buscarProgramasExtensao')->name('buscar')->middleware('auth');
     Route::delete('/excluir/{id}', 'ProgramaExtensaoController@destroy')->name('deletar')->middleware('checkRoles:coordenador,administrador');
+    Route::put('/{id}/aceitar', 'ProgramaExtensaoController@aceitarTrabalho')->name('aceitarTrabalho')->middleware('checkRoles:coordenador,administrador');
+    Route::put('/{id}/rejeitar', 'ProgramaExtensaoController@rejeitarTrabalho')->name('rejeitarTrabalho')->middleware('checkRoles:coordenador,administrador');
+
 });
 
 

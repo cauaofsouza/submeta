@@ -23,6 +23,7 @@ use App\Notificacao;
 use App\Notifications\AtribuicaoAvaliadorExternoNotification;
 use App\ParecerInterno;
 use App\Participante;
+use App\ProgramaExtensao;
 use App\Proponente;
 use App\Substituicao;
 use App\Trabalho;
@@ -141,9 +142,35 @@ class AdministradorController extends Controller
         ]);
     }
 
-    public function analisarTrabalhosProgramaExtensao(Request $request)
+    public function analisarTrabalhosPrograma(Request $request)
     {
-        return view('administrador.analisarProgramaExtensao');
+        $programa = ProgramaExtensao::findOrFail($request->id);
+        $status = ['pendente', 'aceito', 'rejeitado'];
+
+        $aux = Trabalho::where('programa_de_extensao_id', $programa->id)
+            ->whereIn('programa_extensao_status', $status)
+            ->pluck('grande_area_id');
+
+        $idArea = Trabalho::where('programa_de_extensao_id', $programa->id)
+            ->whereIn('programa_extensao_status', $status)
+            ->pluck('area_id');
+
+        $trabalhos = Trabalho::where('programa_de_extensao_id', $programa->id)
+            ->orderBy('titulo');
+
+        $contador_trabalhos = sizeof($trabalhos->pluck('id'));
+
+        $grandesAreas = GrandeArea::whereIn('id', $aux)->get();
+        $areas = Area::whereIn('id', $idArea)->get();
+
+        return view('administrador.analisarProgramaExtensao')->with([
+            'trabalhos'           => $trabalhos->paginate(9999),
+            'programa'            => $programa,
+            'column'              => $request->column,
+            'grandesAreas'        => $grandesAreas,
+            'areas'               => $areas,
+            'contador_trabalhos'  => $contador_trabalhos,
+        ]);
     }
 
     //retorna a média das avaliações dos relatórios e apresentações,
@@ -230,7 +257,7 @@ class AdministradorController extends Controller
 
     public function analisarProposta(Request $request)
     {
-        $trabalho = Trabalho::where('id', $request->id)->first();
+        $trabalho = Trabalho::with('programaDeExtensao')->find($request->id);
         $evento = Evento::where('id', $trabalho->evento_id)->first();
         $funcaoParticipantes = FuncaoParticipantes::all();
         $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();

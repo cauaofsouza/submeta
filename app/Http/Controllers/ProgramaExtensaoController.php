@@ -135,6 +135,29 @@ class ProgramaExtensaoController extends Controller
             'coordenadors' => $coordenadors]);
     }
 
+    public function aceitarTrabalho($id)
+    {
+        $trabalho = Trabalho::findOrFail($id);
+        $trabalho->programa_extensao_status = 'aceito';
+        $trabalho->save();
+
+        return redirect()
+            ->back()
+            ->with(['sucesso' => 'Proposta aceita com sucesso!']);
+    }
+
+    public function rejeitarTrabalho($id)
+    {
+        $trabalho = Trabalho::findOrFail($id);
+        $trabalho->programa_extensao_status = 'rejeitado';
+        $trabalho->save();
+
+        return redirect()
+            ->back()
+            ->with(['sucesso' => 'Proposta rejeitada com sucesso!']);
+    }
+
+
     public function Update(UpdateProgramaExtensaoRequest $request, ProgramaExtensao $programaExtensao)
     {
         $programaExtensao->update([
