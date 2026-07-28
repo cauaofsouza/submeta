@@ -90,8 +90,11 @@
                                 @foreach($trabalho->ods as $ods)<p>- {{$ods->nome}}</p> @endforeach
                             </div>
                             @endif
-
+                            @if($trabalho->programaDeExtensao != null)
+                                @include('evento.formulario.partials.programa-extensao-link', ['projeto' => $trabalho])
+                            @endif
                         </div>
+
                     </div>
                 </div>
             </div>

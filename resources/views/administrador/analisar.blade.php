@@ -49,7 +49,7 @@
                                         
                                                            
                                     </select>
-                                    <p style="color: #234B8B; font-size: 20px;font-weight: bold; margin-top: 30px;">Quatidade de projetos: {{$contador_trabalhos}}</p>
+                                    <p style="color: #234B8B; font-size: 20px;font-weight: bold; margin-top: 30px;">Quantidade de projetos: {{$contador_trabalhos}}</p>
                                 </div>
                             </div>
                         </div>
