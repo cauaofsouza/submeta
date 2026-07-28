@@ -188,4 +188,37 @@ class ProgramaExtensaoController extends Controller
             ->with(['mensagem' => 'Programa de Extensão deletado com sucesso!']);
     }
 
+    public function solicitarVinculoPrograma(Request $request, $id)
+    {
+        $request->validate([
+            'trabalho_id' => ['required', 'exists:trabalhos,id'],
+        ]);
+
+        $programa = ProgramaExtensao::findOrFail($id);
+        $proponente = Proponente::where('user_id', Auth::id())->firstOrFail();
+
+        $trabalho = Trabalho::where('id', $request->trabalho_id)
+            ->where('proponente_id', $proponente->id)
+            ->whereNull('programa_de_extensao_id')
+            ->firstOrFail();
+
+        $trabalho->programa_extensao_status = 'pendente';
+        $trabalho->programa_de_extensao_id = $programa->id;
+        $trabalho->save();
+
+        if ($programa->coordenador && $programa->coordenador->user) {
+            $programa->coordenador->user->notify(
+                (new SolicitacaoVinculacaoProgramaNotification($trabalho, $programa))->delay(now()->addSeconds(2))
+            );
+        }
+
+        if ($programa->viceCoordenador && $programa->viceCoordenador->user) {
+            $programa->viceCoordenador->user->notify(
+                (new SolicitacaoVinculacaoProgramaNotification($trabalho, $programa))->delay(now()->addSeconds(4))
+            );
+        }
+
+        return redirect()->route('programa.visualizar', $programa->id)
+            ->with(['mensagem' => 'Solicitação de vincular proposta ao programa enviada com sucesso!']);
+    }
 }
