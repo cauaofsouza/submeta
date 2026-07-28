@@ -8,15 +8,15 @@
         <div class="list-group">
 
             <a
-                    href="{{ route('evento.visualizar', ['id' => $trabalho->programaDeExtensao->id]) }}" {{-- TODO: TESTAR --}}
+                    href="{{ route('programa.visualizar', ['id' => $projeto->programaDeExtensao->id]) }}"
                     target="_blank"
                     class="list-group-item list-group-item-action"
             >
-                {{ $trabalho->programaDeExtensao->titulo }}
+                {{ $projeto->programaDeExtensao->nome }}
 
                 @if($trabalho->programa_extensao_status)
                     <span class="badge badge-secondary float-right">
-                    {{ ucfirst($trabalho->programa_extensao_status) }}
+                    {{ ucfirst($projeto->programa_extensao_status) }}
                 </span>
                 @endif
             </a>

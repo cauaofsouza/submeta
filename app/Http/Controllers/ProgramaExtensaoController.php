@@ -77,8 +77,51 @@ class ProgramaExtensaoController extends Controller
 
     public function show($id)
     {
-        //pegar projetos e dados do programa
+        $programa = ProgramaExtensao::with(['coordenador.user', 'viceCoordenador.user'])
+            ->findOrFail($id);
 
+        $proponente = Auth::check()
+            ? Proponente::where('user_id', Auth::id())->first()
+            : null;
+
+        $isCoordenadorOuVice = false;
+        $trabalhos = collect();
+        $trabalhosDisponiveis = collect();
+
+
+        if ($proponente) {
+            $trabalhosDisponiveis = Trabalho::where('proponente_id', $proponente->id)
+                ->where('aprovado', '=', '1')
+                ->whereHas('evento', function ($query) {
+                    $query->whereHas('natureza', function ($query) {
+                        $query->whereRaw("nome ~* 'extens(a|ã)o'");
+                    });
+                })
+                ->where(function ($query) {
+                    $query->whereNull('programa_de_extensao_id')
+                        ->orWhere('programa_extensao_status', 'reprovado');
+                })
+                ->orderByDesc('updated_at')
+                ->get();
+        } elseif(Auth::check()){
+            $userId = Auth::id();
+            if (($programa->coordenador && $programa->coordenador->user_id == $userId) ||
+                ($programa->viceCoordenador && $programa->viceCoordenador->user_id == $userId)) {
+                $isCoordenadorOuVice = true;
+                $trabalhos = $programa->trabalhos()->orderBy('titulo')->get();
+            }
+        }
+
+        $hoje = Carbon::today('America/Recife')->toDateString();
+
+        return view('evento.visualizarProgramaExtensao', [
+            'programa'            => $programa,
+            'proponente'          => $proponente,
+            'isCoordenadorOuVice' => $isCoordenadorOuVice,
+            'trabalhos'           => $trabalhos,
+            'trabalhosDisponiveis' => $trabalhosDisponiveis,
+            'hoje'                => $hoje,
+        ]);
     }
 
     public function edit($id)
