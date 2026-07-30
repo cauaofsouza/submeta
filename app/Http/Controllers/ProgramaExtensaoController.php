@@ -50,26 +50,28 @@ class ProgramaExtensaoController extends Controller
     {
         if ($request->hasFile('pdf_edital')) {
             $path = 'pdfEdital/' . $programa->id . '/';
-            Storage::putFileAs($path, $request->file('pdf_edital'), 'edital.pdf');
+            Storage::disk('public')->putFileAs($path, $request->file('pdf_edital'), 'edital.pdf');
             $programa->pdf_edital = $path . 'edital.pdf';
         }
 
         if ($request->hasFile('modelo_documento')) {
-            $dir      = "storage/app/modeloDocumento/{$programa->id}";
-            $filename = "{$dir}/modelo.zip";
+            $relativeDir = "modeloDocumento/{$programa->id}";
+            $absoluteDir = Storage::disk('public')->path($relativeDir);
 
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
+            if (!file_exists($absoluteDir)) {
+                mkdir($absoluteDir, 0777, true);
             }
 
+            $zipPath = "{$absoluteDir}/modelo.zip";
+
             $zip = new ZipArchive;
-            $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+            $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
             foreach ($request->file('modelo_documento') as $file) {
                 $zip->addFile($file->getRealPath(), $file->getClientOriginalName());
             }
             $zip->close();
 
-            $programa->modelo_documento = $filename;
+            $programa->modelo_documento = "{$relativeDir}/modelo.zip";
         }
 
         $programa->save();
@@ -128,10 +130,9 @@ class ProgramaExtensaoController extends Controller
     {
         $programa = ProgramaExtensao::find($id);
         $coordenadors = CoordenadorComissao::with('user')->get();
-        $trabalhos = Trabalho::where('programa_de_extensao_id', '=', $id)->get();
+//        dd($programa);
         return view('evento.editarProgramaExtensao',[
             'programa' => $programa,
-            'trabalhos' => $trabalhos,
             'coordenadors' => $coordenadors]);
     }
 
@@ -158,9 +159,9 @@ class ProgramaExtensaoController extends Controller
     }
 
 
-    public function Update(UpdateProgramaExtensaoRequest $request, ProgramaExtensao $programaExtensao)
+    public function Update(UpdateProgramaExtensaoRequest $request, ProgramaExtensao $programa)
     {
-        $programaExtensao->update([
+        $programa->update([
             'nome'                => $request->nome,
             'descricao'           => $request->descricao,
             'coordenador_id'      => $request->coordenador_id,
@@ -169,7 +170,7 @@ class ProgramaExtensaoController extends Controller
             'vigencia_fim'        => $request->vigencia_fim,
         ]);
 
-        $this->armazenarAnexos($request, $programaExtensao);
+        $this->armazenarAnexos($request, $programa);
 
         return redirect()
             ->route('coordenador.editais')

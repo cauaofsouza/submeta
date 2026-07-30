@@ -24,6 +24,11 @@ class ProgramaExtensao extends Model
         'criador_id',
     ];
 
+    protected $casts = [
+        'vigencia_inicio' => 'date',
+        'vigencia_fim'    => 'date',
+    ];
+
     public function coordenador()
     {
         return $this->belongsTo(CoordenadorComissao::class, 'coordenador_id');

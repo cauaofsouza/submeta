@@ -385,7 +385,7 @@ Route::prefix('programa-extensao')->name('programa.')->group(function () {
     Route::post('/criar', 'ProgramaExtensaoController@store')->name('criar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/visualizar/{id}', 'ProgramaExtensaoController@show')->name('visualizar')->middleware('auth');
     Route::get('/editar/{id}', 'ProgramaExtensaoController@edit')->name('editar')->middleware('checkRoles:coordenador,administrador');
-    Route::put('/{id}', 'ProgramaExtensaoController@update')->name('atualizar')->middleware('checkRoles:coordenador,administrador');
+    Route::put('/{programa}', 'ProgramaExtensaoController@update')->name('atualizar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/buscar', 'ProgramaExtensaoController@buscarProgramasExtensao')->name('buscar')->middleware('auth');
     Route::delete('/excluir/{id}', 'ProgramaExtensaoController@destroy')->name('deletar')->middleware('checkRoles:coordenador,administrador');
     Route::post('/{id}/solicitarVinculo', 'ProgramaExtensaoController@solicitarVinculoPrograma')->name('solicitarVinculo')->middleware('auth');
