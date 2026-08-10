@@ -47,4 +47,12 @@ class ProgramaExtensao extends Model
     {
         return $this->hasMany(Trabalho::class, 'programa_de_extensao_id');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($programa) {
+            \App\Trabalho::where('programa_de_extensao_id', $programa->id)
+                ->update(['programa_extensao_status' => null]);
+        });
+    }
 }
