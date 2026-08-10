@@ -180,17 +180,15 @@ class ProgramaExtensaoController extends Controller
 
     public function buscarProgramasExtensao(Request $request)
     {
-        $programas = Evento::where('tipo', 'PROGRAMA_EXTENSAO')//CRIAR UM PARA TESTE
-        ->where('titulo', 'ILIKE', '%' . $request->busca . '%')
+        $programas = ProgramaExtensao::where('nome', 'ILIKE', '%' . $request->busca . '%')
             ->limit(3)
-            ->get(['id', 'titulo']);
+            ->get(['id', 'nome']);
 
         return response()->json($programas);
     }
 
-    public function listar()
+    public function listar()//esta incluso nos metodos de EventoController que lidam com evento
     {
-
     }
 
     public function destroy($id)

@@ -14,7 +14,7 @@
             >
                 {{ $projeto->programaDeExtensao->nome }}
 
-                @if($trabalho->programa_extensao_status)
+                @if($projeto->programa_extensao_status)
                     <span class="badge badge-secondary float-right">
                     {{ ucfirst($projeto->programa_extensao_status) }}
                 </span>

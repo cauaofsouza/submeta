@@ -177,13 +177,13 @@
                         @endif
                         <input type="hidden" id="modeloDocumentoPreenchido" name="modeloDocumentoPreenchido" value="{{ old('modeloDocumentoPreenchido') }}">
                         <input type="file" accept=".doc,.docx,.pdf,.zip"
-                               class="form-control-file @error('modeloDocumento[]') is-invalid @enderror"
-                               name="modeloDocumento[]" id="modeloDocumento" multiple onchange="exibirAnexoTemp(this)">
+                               class="form-control-file @error('modelo_documento.*') is-invalid @enderror"
+                               name="modelo_documento[]" id="modeloDocumento" multiple onchange="exibirAnexoTemp(this)">
                         <small>Os arquivos devem ter até 2MB cada.</small>
-                        @error('modeloDocumento[]')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        @error('modelo_documento.*')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
                         @enderror
                     </div>
                 </div>
@@ -204,18 +204,18 @@
     </div>
     {{-- MODAL COORDENADOR --}}
 
-<div class="modal fade" id="modalCoordenadorPrograma" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalCoordenadorProgramaLabel" style="color:#1492E6"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#1492E6">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead>
+    <div class="modal fade" id="modalCoordenadorPrograma" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCoordenadorProgramaLabel" style="color:#1492E6"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#1492E6">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Email</th>
@@ -223,8 +223,8 @@
                             <th>Instituição</th>
                             <th>Seleção</th>
                         </tr>
-                    </thead>
-                    <tbody id="modalCoordenadorProgramaBody">
+                        </thead>
+                        <tbody id="modalCoordenadorProgramaBody">
                         @foreach($coordenadors as $coordenador)
                             <tr data-id="{{ $coordenador->id }}">
                                 <td>{{ $coordenador->user->name }}</td>
@@ -238,12 +238,12 @@
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 @endsection
