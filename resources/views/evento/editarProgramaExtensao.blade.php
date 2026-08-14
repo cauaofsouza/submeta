@@ -148,8 +148,8 @@
                 </div>
             </div>
 
-            <div class="row justify-content-center" style="margin-top:10px">
-                <div class="col-sm-6">
+            <div class="row justify-content-between" style="margin-top:10px">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="pdf_edital">
                             Anexar edital:
@@ -166,7 +166,7 @@
                         <input type="file" accept=".pdf"
                                class="form-control-file pdf @error('pdf_edital') is-invalid @enderror"
                                name="pdf_edital" id="pdf_edital" onchange="exibirAnexoTemp(this)">
-                        <small>O arquivo deve estar em formato PDF e ter até 2MB. Deixe em branco para manter o arquivo atual.</small>
+                        <small>O arquivo deve estar em formato PDF e ter até 2MB.<br>Deixe em branco para manter o arquivo atual.</small>
                         @error('pdf_edital')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -175,7 +175,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="modeloDocumento">
                             Anexar modelos de documentos:
@@ -191,11 +191,34 @@
                         <input type="file" accept=".doc,.docx,.pdf,.zip"
                                class="form-control-file @error('modelo_documento') is-invalid @enderror"
                                name="modelo_documento[]" id="modeloDocumento" multiple onchange="exibirAnexoTemp(this)">
-                        <small>Os arquivos devem ter até 2MB cada. Deixe em branco para manter os arquivos atuais.</small>
+                        <small>Os arquivos devem ter até 2MB cada.<br>Deixe em branco para manter os arquivos atuais.</small>
                         @error('modelo_documento')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="modelo_relatorio">
+                            Anexar modelo de relatório:
+                        </label>
+                        @if(old('modeloRelatorioPreenchido') != null)
+                            <a id="modeloRelatorioTemp" href="{{ route('baixar.modelo.evento.temp', ['nomeAnexo' => 'modeloRelatorio']) }}">Arquivo atual</a>
+                        @elseif($programa->modelo_relatorio)
+                            <a id="modeloRelatorioAtual" href="{{ Storage::url($programa->modelo_relatorio) }}" target="_blank">Arquivo atual</a>
+                        @endif
+                        <input type="hidden" id="modeloRelatorioPreenchido" name="modeloRelatorioPreenchido" value="{{ old('modeloRelatorioPreenchido') }}">
+                        <input type="file" accept=".pdf,.doc,.docx"
+                               class="form-control-file @error('modelo_relatorio') is-invalid @enderror"
+                               name="modelo_relatorio" id="modelo_relatorio" onchange="exibirAnexoTemp(this)">
+                        <small>O arquivo deve ter até 2MB.<br>Deixe em branco para manter o arquivo atual.</small>
+                        @error('modelo_relatorio')
+                        <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
                         @enderror
                     </div>
                 </div>
@@ -264,6 +287,7 @@
             const map = {
                 'pdf_edital':      'pdfEditalPreenchido',
                 'modeloDocumento': 'modeloDocumentoPreenchido',
+                'modelo_relatorio': 'modeloRelatorioPreenchido',
             };
             if (map[file.id]) {
                 document.getElementById(map[file.id]).value = 'sim';

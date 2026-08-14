@@ -74,6 +74,13 @@ class ProgramaExtensaoController extends Controller
             $programa->modelo_documento = "{$relativeDir}/modelo.zip";
         }
 
+        if ($request->hasFile('modelo_relatorio')) {
+            $extension = $request->file('modelo_relatorio')->getClientOriginalExtension();
+            $path = 'modeloRelatorio/' . $programa->id . '/';
+            Storage::disk('public')->putFileAs($path, $request->file('modelo_relatorio'), 'relatorio.' . $extension);
+            $programa->modelo_relatorio = $path . 'relatorio.' . $extension;
+        }
+
         $programa->save();
     }
 

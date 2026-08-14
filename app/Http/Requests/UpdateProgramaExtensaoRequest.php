@@ -30,6 +30,7 @@ class UpdateProgramaExtensaoRequest extends FormRequest
                 'file', 'mimes:pdf', 'max:2048',
             ],
             'modelo_documento.*'  => ['nullable', 'file', 'max:2048'],
+            'modelo_relatorio.*'  => ['nullable', 'file', 'max:2048'],
         ];
     }
 
@@ -47,6 +48,7 @@ class UpdateProgramaExtensaoRequest extends FormRequest
             'pdf_edital.mimes'           => 'O edital deve estar no formato PDF.',
             'pdf_edital.max'             => 'O edital deve ter no máximo 2MB.',
             'modelo_documento.*.max'     => 'Cada modelo de documento deve ter no máximo 2MB.',
+            'modelo_relatorio.*.max'     => 'Cada modelo de relatório parcial anual deve ter no máximo 2MB.',
         ];
     }
 }

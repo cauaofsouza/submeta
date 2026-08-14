@@ -37,6 +37,8 @@ class CreateProgramaExtensaosTable extends Migration
 
             $table->string('pdf_edital')->nullable();
             $table->string('modelo_documento')->nullable();
+            $table->string('modelo_relatorio')->nullable();
+
 
             $table->unsignedBigInteger('criador_id');
             $table->foreign('criador_id')

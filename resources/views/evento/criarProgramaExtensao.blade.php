@@ -145,8 +145,8 @@
                 </div>
             </div>
 
-            <div class="row justify-content-center" style="margin-top:10px">
-                <div class="col-sm-6">
+            <div class="row justify-content-between" style="margin-top:10px">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="pdf_edital">
                             Anexar edital:<span style="color:red; font-weight:bold;">*</span>
@@ -167,7 +167,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="modeloDocumento">
                             Anexar modelos de documentos:
@@ -187,6 +187,27 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="modelo_relatorio">
+                            Anexar modelo de relatório parcial anual:
+                        </label>
+                        @if($programa->modelo_relatorio ?? old('modelo_relatorio') != null)
+                            <a id="modeloRelatorioTemp" href="{{ Storage::url($programa->modelo_relatorio ?? '') }}">Arquivo atual</a>
+                        @endif
+                        <input type="file" accept=".pdf,.doc,.docx"
+                               class="form-control-file @error('modelo_relatorio') is-invalid @enderror"
+                               name="modelo_relatorio" id="modelo_relatorio">
+                        <small>O arquivo deve ter até 2MB.</small>
+                        @error('modelo_relatorio')
+                        <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                        @enderror
+                    </div>
+                </div>
+
             </div>
 
             {{-- ===================== AÇÕES ===================== --}}

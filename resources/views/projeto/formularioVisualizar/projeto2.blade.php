@@ -20,8 +20,8 @@
               <div style="padding-top: 15px">
                   @if($projeto->programaDeExtensao != null)
                       @include('evento.formulario.partials.programa-extensao-link')
-                  @else
-                      @include('evento.formulario.partials.programa-extensao-search')
+                  @elseif( $projeto->status === 'aprovado')
+                      @include('evento.formulario.partials.programa-extensao-search', ['trabalhoId' => $projeto->id])
                   @endif
               </div>
           @endif

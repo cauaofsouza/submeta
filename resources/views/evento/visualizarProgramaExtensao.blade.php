@@ -187,7 +187,7 @@
                                     </div>
                                     <div class="col-md-12"><hr></div>
 
-                                    {{-- Relatório Anual (visualização apenas, ainda sem funcionalidade) --}}
+                                    {{-- Modelo de Relatório --}}
                                     <div class="col-md-12">
                                         <div class="d-flex justify-content-left align-items-center" style="margin-bottom: -15px">
                                             <div style="margin-right:10px; margin-top:-15px">
@@ -195,9 +195,16 @@
                                             </div>
                                             <div class="form-group" style="width: 100%">
                                                 <div class="d-flex justify-content-between" style="width: 100%">
-                                                    <div><h5 style="font-size:17px; margin-top:18px">Relatório<br>Anual</h5></div>
+                                                    <div><h5 style="font-size:17px; margin-top:18px">Modelo de Relatório<br>Parcial Anual</h5></div>
                                                     <div style="float: right">
-                                                        <span style="color:#909090">Não disponível</span>
+                                                        @if($programa->modelo_relatorio)
+                                                            <a class="btn btn-light" href="{{ Storage::url($programa->modelo_relatorio) }}" target="_new">
+                                                                <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
+                                                                Baixar
+                                                            </a>
+                                                        @else
+                                                            <span style="color:#909090">Não disponível</span>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
