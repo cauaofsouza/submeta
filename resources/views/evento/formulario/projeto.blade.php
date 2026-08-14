@@ -149,9 +149,6 @@
                   </div>
             @endif
         </div>
-        @if($edital->natureza_id == 3) {{-- para EXTENSAO, se nao der certo o problema e a seed que nao esta settando natureza | testar se ta dando certo--}}
-          @include('evento.formulario.partials.programa-extensao-search')
-        @endif
       </div>
     </div>
   </div>

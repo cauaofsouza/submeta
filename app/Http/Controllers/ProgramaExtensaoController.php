@@ -219,11 +219,13 @@ class ProgramaExtensaoController extends Controller
 
     public function solicitarVinculoPrograma(Request $request, $id)
     {
+        $successMessage = 'Solicitação de vincular proposta ao programa enviada com sucesso!';
         $request->validate([
             'trabalho_id' => ['required', 'exists:trabalhos,id'],
         ]);
 
         $programa = ProgramaExtensao::findOrFail($id);
+
         $proponente = Proponente::where('user_id', Auth::id())->firstOrFail();
 
         $trabalho = Trabalho::where('id', $request->trabalho_id)
@@ -242,12 +244,20 @@ class ProgramaExtensaoController extends Controller
         }
 
         if ($programa->viceCoordenador && $programa->viceCoordenador->user) {
+            sleep(2);
             $programa->viceCoordenador->user->notify(
                 (new SolicitacaoVinculacaoProgramaNotification($trabalho, $programa))->delay(now()->addSeconds(4))
             );
         }
 
-        return redirect()->route('programa.visualizar', $programa->id)
-            ->with(['mensagem' => 'Solicitação de vincular proposta ao programa enviada com sucesso!']);
+        if($request->button){//caso a rota seja acessada por meio do ajax
+            return response()->json([
+                'mensagem' => $successMessage
+            ], 200);
+        } else {
+            return redirect()->route('programa.visualizar', $programa->id)
+                ->with(['mensagem' => $successMessage]);
+        }
+
     }
 }
