@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class UpdateProgramaExtensaoRequest extends FormRequest
 {
@@ -23,7 +24,19 @@ class UpdateProgramaExtensaoRequest extends FormRequest
             'vice_coordenador_id' => ['nullable', 'exists:coordenador_comissaos,id'],
 
             'vigencia_inicio'     => ['required', 'date'],
-            'vigencia_fim'        => ['required', 'date', 'after:vigencia_inicio'],
+            'vigencia_fim' => [
+                'required',
+                'date',
+                'after:vigencia_inicio',
+                function ($attribute, $value, $fail) {
+                    $inicio = Carbon::parse($this->vigencia_inicio);
+                    $limite = $inicio->copy()->addYears(5);
+
+                    if (Carbon::parse($value)->greaterThan($limite)) {
+                        $fail('A vigência não pode ultrapassar 5 anos a partir da data de início.');
+                    }
+                },
+            ],
 
             'pdf_edital'          => [
                 (!$programa->pdf_edital && $this->pdfEditalPreenchido !== 'sim') ? 'required' : 'nullable',
