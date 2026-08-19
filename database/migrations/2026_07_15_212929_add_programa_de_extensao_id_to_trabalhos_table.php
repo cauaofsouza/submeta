@@ -19,6 +19,8 @@ class AddProgramaDeExtensaoIdToTrabalhosTable extends Migration
                 'rejeitado'
             ])->nullable();
 
+            $table->text('motivo_rejeicao')->nullable();
+
             $table->foreign('programa_de_extensao_id')
                 ->references('id')
                 ->on('programa_extensaos')

@@ -7,6 +7,7 @@ use App\Evento;
 use App\Http\Requests\StoreProgramaExtensaoRequest;
 use App\Http\Requests\UpdateProgramaExtensaoRequest;
 use App\Notifications\SolicitacaoVinculacaoProgramaNotification;
+use App\Notifications\VinculacaoProgramaNotification;
 use App\ProgramaExtensao;
 use App\Proponente;
 use App\Trabalho;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
@@ -143,26 +145,45 @@ class ProgramaExtensaoController extends Controller
             'coordenadors' => $coordenadors]);
     }
 
-    public function aceitarTrabalho($id)
+    public function aceitarTrabalho($request, $trabalhoId)
     {
-        $trabalho = Trabalho::findOrFail($id);
+        $trabalho = Trabalho::findOrFail($trabalhoId);
         $trabalho->programa_extensao_status = 'aceito';
         $trabalho->save();
+
+        $programa = ProgramaExtensao::findOrFail($trabalho->programa_de_extensao_id);
+
+        Notification::send(
+            $trabalho->proponente->user,
+            new VinculacaoProgramaNotification($trabalho, $programa, 'aceito')
+        );
 
         return redirect()
             ->back()
             ->with(['sucesso' => 'Proposta aceita com sucesso!']);
     }
 
-    public function rejeitarTrabalho($id)
+    public function rejeitarTrabalho(Request $request, $trabalhoId)
     {
-        $trabalho = Trabalho::findOrFail($id);
+        $request->validate([
+            'motivo_rejeicao' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $trabalho = Trabalho::findOrFail($trabalhoId);
         $trabalho->programa_extensao_status = 'rejeitado';
+        $trabalho->motivo_rejeicao = $request->motivo_rejeicao;
         $trabalho->save();
+
+        $programa = ProgramaExtensao::findOrFail($trabalho->programa_de_extensao_id);
+
+        Notification::send(
+            $trabalho->proponente->user,
+            new VinculacaoProgramaNotification($trabalho, $programa, 'rejeitado')
+        );
 
         return redirect()
             ->back()
-            ->with(['sucesso' => 'Proposta rejeitada com sucesso!']);
+            ->with(['sucesso' => 'Proposta rejeitada com sucesso']);
     }
 
 

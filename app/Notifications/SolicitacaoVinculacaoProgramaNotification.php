@@ -54,7 +54,7 @@ class SolicitacaoVinculacaoProgramaNotification extends Notification
         return (new MailMessage)
             ->subject('Sistema Submeta - Solicitação de vinculação de proposta')
             ->greeting('Saudações!')
-            ->line("O proponente {$this->nomeProponente} solicitou a vinculação da proposta \"{$this->titulo}\" ao Programa de Extensão \"{$this->nomePrograma}\".\n\n.")
+            ->line("O proponente {$this->nomeProponente} solicitou a vinculação da proposta \"{$this->titulo}\" ao Programa de Extensão \"{$this->nomePrograma}\".\n\n")
             ->line('Acesse o programa para aprovar ou reprovar esta solicitação.')
             ->line("{$this->data}")
             ->action('Revisar Solicitação', $this->url)

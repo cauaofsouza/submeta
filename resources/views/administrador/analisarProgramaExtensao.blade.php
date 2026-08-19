@@ -114,25 +114,41 @@
                                 </div>
                                 @if($trabalho->programa_extensao_status === 'pendente')
                                     <div class="col-md-3 mx-4">
-                                        <form method="POST" action="{{ route('programa.aceitarTrabalho', ['id' => $trabalho->id]) }}">
+                                        <form method="POST" action="{{ route('programa.aceitarTrabalho', ['id' => $trabalho->id, 'programaId' => $programa->id, 'aceito' => true]) }}">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-success" style="width:100%">Aceitar</button>
                                         </form>
                                     </div>
-                                @endif
-                                @if($trabalho->programa_extensao_status == 'pendente')
                                     <div class="col-md-3 mx-4">
-                                        <form method="POST" action="{{ route('programa.rejeitarTrabalho', ['id' => $trabalho->id]) }}">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-danger" style="width:100%">Rejeitar</button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger" style="width:100%" data-toggle="modal" data-target="#modalRejeitar{{$trabalho->id}}">
+                                            Rejeitar
+                                        </button>
                                     </div>
                                 @endif
 
                             </div>
-
+                            <div class="modal fade" id="modalRejeitar{{$trabalho->id}}" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <form method="post" action="{{ route('programa.rejeitarTrabalho', ['id' => $trabalho->id, 'programaId' => $programa->id]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Rejeitar Proposta</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label for="motivo_rejeicao">Motivo da rejeição <span style="color:red">*</span></label>
+                                                <textarea name="motivo_rejeicao" id="motivo_rejeicao" class="form-control" rows="4" required></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-info">Rejeitar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
