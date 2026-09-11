@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OdsSeeder::class);
         $this->call(CursoSeeder::class);
         $this->call(AreaTematicaSeeder::class);
+        $this->call(OdsSeeder::class);
 
         //continua users devido a dependencias
         $this->call(CoordenadorComissaoSeeder::class);
@@ -45,11 +46,11 @@ class DatabaseSeeder extends Seeder
         $this->call(ParticipanteSeeder::class);
 
 
-        // ===== DEPENDÊNCIAS DE TRABALHO ===== todo:  rever
+        // ===== DEPENDÊNCIAS DE TRABALHO =====
         $this->call(ArquivoSeeder::class);
         $this->call(CampoAvaliacaoSeeder::class);
 
-        // ===== RELACIONAMENTOS ===== todo: rever y testar
+        // ===== RELACIONAMENTOS =====
         $this->call(AvaliadorEventoSeeder::class);      // avaliador ↔ evento
         $this->call(AvaliadorTrabalhoSeeder::class);    // avaliador ↔ trabalho
 
