@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    container_name: laravel_app
+    working_dir: /var/www
+
+    volumes:
+      - .:/var/www
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - db
+
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  db:
+    image: postgres:13
+
+    container_name: laravel_db
+
+    environment:
+      POSTGRES_DB: submeta
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: cauacaua
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
